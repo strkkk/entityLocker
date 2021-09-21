@@ -1,2 +1,5 @@
 /.idea/
-/target/
+target/
+# exclude jcstress output folder
+results
+jcstress-results-*

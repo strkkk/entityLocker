@@ -1,8 +1,5 @@
 package com.example.impl;
 
-import static com.example.LockerUtil.checkNotNull;
-import static com.example.LockerUtil.convert2callable;
-
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.example.LockerUtil;
 import com.example.EntityLocker;
 import com.example.ExecutionException;
 
@@ -24,7 +22,7 @@ public final class SimpleEntityLocker<T> implements EntityLocker<T> {
     }
 
     public SimpleEntityLocker(long defaultTimeAmount, TimeUnit timeUnit) {
-        checkNotNull(timeUnit, "timeUnit");
+        LockerUtil.checkNotNull(timeUnit, "timeUnit");
         if (defaultTimeAmount < 0) {
             throw new IllegalArgumentException("time amount should be greater than 0");
         }
@@ -40,9 +38,9 @@ public final class SimpleEntityLocker<T> implements EntityLocker<T> {
      */
     @Override
     public void executeWithLock(T id, Runnable protectedCode) throws ExecutionException, TimeoutException {
-        checkNotNull(id, "id");
-        checkNotNull(protectedCode, "protectedCode");
-        execute(id, convert2callable(protectedCode), defaultTimeAmount, timeUnit);
+        LockerUtil.checkNotNull(id, "id");
+        LockerUtil.checkNotNull(protectedCode, "protectedCode");
+        execute(id, LockerUtil.convert2callable(protectedCode), defaultTimeAmount, timeUnit);
     }
 
     /**
@@ -55,13 +53,13 @@ public final class SimpleEntityLocker<T> implements EntityLocker<T> {
      */
     @Override
     public void executeWithLock(T id, Runnable protectedCode, long timeAmount, TimeUnit timeUnit) throws ExecutionException, TimeoutException {
-        checkNotNull(id, "id");
-        checkNotNull(protectedCode, "protectedCode");
-        checkNotNull(timeUnit, "timeUnit");
+        LockerUtil.checkNotNull(id, "id");
+        LockerUtil.checkNotNull(protectedCode, "protectedCode");
+        LockerUtil.checkNotNull(timeUnit, "timeUnit");
         if (timeAmount < 0) {
             throw new IllegalArgumentException("time amount should be >= 0");
         }
-        execute(id, convert2callable(protectedCode), timeAmount, timeUnit);
+        execute(id, LockerUtil.convert2callable(protectedCode), timeAmount, timeUnit);
     }
 
     /**
@@ -72,8 +70,8 @@ public final class SimpleEntityLocker<T> implements EntityLocker<T> {
      */
     @Override
     public <R> R executeWithLock(T id, Callable<R> protectedCode) throws ExecutionException, TimeoutException {
-        checkNotNull(id, "id");
-        checkNotNull(protectedCode, "protectedCode");
+        LockerUtil.checkNotNull(id, "id");
+        LockerUtil.checkNotNull(protectedCode, "protectedCode");
         return execute(id, protectedCode, defaultTimeAmount, timeUnit);
     }
 
@@ -87,9 +85,9 @@ public final class SimpleEntityLocker<T> implements EntityLocker<T> {
      */
     @Override
     public <R> R executeWithLock(T id, Callable<R> protectedCode, long timeAmount, TimeUnit timeUnit) throws ExecutionException, TimeoutException {
-        checkNotNull(id, "id");
-        checkNotNull(protectedCode, "protectedCode");
-        checkNotNull(timeUnit, "timeUnit");
+        LockerUtil.checkNotNull(id, "id");
+        LockerUtil.checkNotNull(protectedCode, "protectedCode");
+        LockerUtil.checkNotNull(timeUnit, "timeUnit");
         if (timeAmount < 0) {
             throw new IllegalArgumentException("time amount should be greater than 0");
         }
